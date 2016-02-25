@@ -7,10 +7,14 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  io.emit('user connect', 'welcome');
+  var name;
+  socket.on('new user', function(nickname){
+    name = nickname;
+    io.emit('user connect', 'Welcome ' + name)
+  });
 
   socket.on('disconnect', function(){
-    io.emit('user disconnect', 'bye');
+    io.emit('user disconnect', 'Bye ' + name);
   });
 
   socket.on('chat message', function(msg){

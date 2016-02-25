@@ -21,7 +21,9 @@
     <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script>
+      var nickname = prompt('Your name plz', 'Anonymous');
       var socket = io();
+      socket.emit('new user', nickname);
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
