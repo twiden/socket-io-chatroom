@@ -10,3 +10,4 @@ Message when users connect and disconnect
 Nicknames
 Show who is typing
 List connected users
+Send private messages

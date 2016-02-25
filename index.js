@@ -13,7 +13,7 @@ io.on('connection', function(socket){
   socket.emit('users typing', Object.keys(typers));
   socket.on('new user', function(nickname){
     name = nickname;
-    users[name] = true
+    users[name] = socket;
     io.emit('user connect', 'Welcome ' + name)
     io.emit('list users', Object.keys(users))
   });
@@ -36,7 +36,18 @@ io.on('connection', function(socket){
   });
 
   socket.on('chat message', function(msg){
-    io.emit('chat message', {sender: name, msg: msg});
+  	var to = msg.to;
+  	var message = msg.msg;
+  	if (to == 'everyone') {
+  		io.emit('chat message', {sender: name, msg: message, to: to, private: false});
+  	}
+  	else {
+  		var send_this = {sender: name, msg: message, to: to, private: true};
+  		users[to].emit('chat message', send_this);
+  		if (to != name){
+  			socket.emit('chat message', send_this);
+  		}
+  	}
   });
 
 });
