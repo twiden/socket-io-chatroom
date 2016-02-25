@@ -24,20 +24,28 @@
       var nickname = prompt('Your name plz', 'Anonymous');
       var socket = io();
       socket.emit('new user', nickname);
+
       socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+        var item = $('<li>');
+        item.append($('<strong>').text(msg.sender + ': '))
+        item.append($('<span>').text(msg.msg))
+        $('#messages').append(item);
       });
+
       socket.on('user connect', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
+
       socket.on('user disconnect', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
+
       $('form').submit(function(){
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
         return false;
       });
+
     </script>
   </body>
 </html>
